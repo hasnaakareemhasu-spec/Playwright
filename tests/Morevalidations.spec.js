@@ -1,3 +1,4 @@
+//Document Object Model
 const {test,expect} = require("@playwright/test");
 
 test('Popup Validations',async({page})=>{
@@ -38,3 +39,27 @@ test('Popup Validations',async({page})=>{
 
     await page.pause()
 })
+
+//screenshot
+test('Screenshot', async({page})=>{
+    await page.goto("https://www.saucedemo.com")
+    await expect(page.locator(".error-message-container.error")).toBeHidden()
+    await page.locator("#login-button").click()
+    await page.locator(".error-message-container.error").screenshot({path:'error.png'}) //just the screenshot of the error message container
+    await expect(page.locator(".error-message-container.error")).toBeVisible() 
+    await page.screenshot({path:'error1.png'})//screenshot of the entire page
+    await page.pause()
+    //O/P: The error.png and error1.png are created inside /tests/ folder path
+})
+
+//visual comparison
+test('Visual Comparison',async({page})=>{
+    await page.goto("https://www.saucedemo.com")
+    expect(await page.screenshot()).toMatchSnapshot("Saucedemo.png") //comparison  
+    // O/P:first time it will get an error - 
+    // first time there will not be any snapshot in Saucedemo.png to compare it with the page screeshot
+    //A folder has been generated inside /tests/ path and Saucedemo.png snapshot has been created inside this folder in this first attempt.
+    // O/P:Second time onward, it works fine. 
+    // It will use the snapshot which was created in first attempt of running the program and compares it with the page screenshot
+})
+

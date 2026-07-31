@@ -1,5 +1,6 @@
+//Document Object Model
 const {test,expect} = require("@playwright/test");
-
+test.describe.configure({mode:"parallel"})
 //older method of writing a testcase
 test('First testcase',async function(){
 
@@ -110,7 +111,7 @@ test('Child window and new tab handling',async({browser})=>{ //here we are passi
 //second prirority in playwright goes to - CSS locators
 //third prirority in playwright goes to - Xpath (Selectorshub)
 //using special locators
-test.only('Special Locators',async({page})=>{
+test('Special Locators',async({page})=>{
     await page.goto("https://selenium.qabible.in/index.php")
     //await page.locator("//a[normalize-space()='Input Form']").click()
     //getByRole( for links and buttons)
@@ -141,5 +142,34 @@ test.only('Special Locators',async({page})=>{
     await page.getByRole("button",{name:'Show Message'}).click()
     await page.getByText("Your Message : Hello, World!").isVisible()
     
+    await page.pause()
+})
+
+//Calander validation: 11/12/1997 (mm/dd/yyyy)
+const date = 12
+const month = 11
+//const year = 1997
+test('Calander Validation', async({page})=>{
+    await page.goto("https://selenium.qabible.in/index.php")
+    await page.getByRole("link",{name:'Date Pickers'}).click()
+    await page.getByRole("link",{name:'Bootstrap Date Picker'}).click()
+    await page.locator("#single-input-field").click()
+    await page.locator(".datepicker-days th.datepicker-switch").click()
+    await page.locator(".datepicker-months th.datepicker-switch").click()
+    const targetyear = 1997
+    while(true){
+        const currentdecade = await page.locator(".datepicker-years th.datepicker-switch").textContent() 
+        //We will get 2020-2029 in current decade
+        const startdecade = parseInt(currentdecade.split("-")[0]) //We are splitting the current decade on the basis of '-' and parsing the values to integer data type
+        //split will divide the currentdecade into array with index value 2: 2020,-,2029 (0,1,2 array index)
+        //startdecade will be 2020 now stored in the 0th array index
+        if(targetyear >= startdecade && targetyear <= startdecade+9)
+           break //if the if condn satisfies, the code will come out of this while loop
+        await page.locator(".datepicker-years th.prev").click() //clicking the prev button till it reaches 1997 section
+    }
+    await page.getByText(targetyear.toString(),{exact:true}).click() //getting the year 1997
+    await page.locator(".month").nth(month - 1).click() //getting the month November
+    //12 months = 0 to 11 index (So 11th month nov have index of 'month-1' that is 10)
+    await page.getByText(date.toString(),{exact:true}).first().click() //getting the date 12
     await page.pause()
 })

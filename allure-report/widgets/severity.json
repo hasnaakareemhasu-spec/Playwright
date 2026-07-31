@@ -1,0 +1,1 @@
+[{"uid":"6443d2b96b48b9d2","name":"@web Client app automation","time":{"start":1785379827310,"stop":1785379831565,"duration":4255},"status":"passed","severity":"normal"},{"uid":"6f7b9b0e677ce5a4","name":"@web Client app automation using special locators","time":{"start":1785379827290,"stop":1785379840163,"duration":12873},"status":"passed","severity":"normal"}]

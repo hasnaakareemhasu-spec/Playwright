@@ -6,7 +6,9 @@ const config = ({
     timeout:40*1000,},
   reporter:'html',
   use:{browsername:'chromium',
-  headless:false
+  headless:false,
+  screenshot:'on',
+  trace:'on'
   },
 })
 module.exports = config

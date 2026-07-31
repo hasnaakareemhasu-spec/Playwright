@@ -1,8 +1,8 @@
 //Convert Clientapp.spec.js file using special locators in tests/Clientappspecial.spec.js file
-
+//Document Object Model
 const {test,expect} = require("@playwright/test");
 
-test('Client app automation using special locators',async({page})=>{
+test('@web Client app automation using special locators',async({page})=>{
     await page.goto("https://www.saucedemo.com")
 
     //1. login page
