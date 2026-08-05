@@ -27,7 +27,7 @@ test('@web Client app automation',async({page})=>{
     //waitFor() pauses until the element is attached/visible and ready
     await page.locator(".inventory_item_name").waitFor()
     await page.locator("#checkout").click()
-    //check out oage
+    //check out page
     await page.locator("#first-name").fill("Hasna")
     await page.locator("#last-name").fill("Kareem")
     await page.locator("#postal-code").fill("97006")

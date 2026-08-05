@@ -3,6 +3,7 @@
 // use the functions readexcelfile and writeexcelfile from ExcelDemo.js file instead of TC2
 const {test , expect} = require("@playwright/test");
 const ExcelJS = require("exceljs");
+const fs = require("fs");
 
 test( "Excel Downloading and Uploading with Read and Write Functions", async( { page } ) => {
 
@@ -47,22 +48,34 @@ test( "Excel Downloading and Uploading with Read and Write Functions", async( { 
         return output
     }
 
+  
+  await page.goto("https://the-internet.herokuapp.com/upload")
+    // Prefer setting files directly on the file input rather than relying on a filechooser event.
+    // This is more reliable across browsers and test runners.
+  await page.locator("#file-upload").setInputFiles(excelFilePath)
+
+  await page.locator("#file-submit").click()
+  await expect(page.locator("#uploaded-files")).toContainText("Obsqura Testing.xlsx")
+  await page.pause()
+
+  /*
   //Opens the Tiiny Host website - to upload excel file
-  await page.goto("https://tiiny.host/")
+  await page.goto("https://tiinyhost/")
   //await page.waitForLoadState('networkidle')
 
   const [ upload ] = await Promise.all([
     page.waitForEvent( 'filechooser' ),
-    await page.getByRole( "button", { name: 'Upload file', exact: true } ).click()
+    page.getByRole( "button", { name: 'Upload file', exact: true } ).click()
   ])
 
-  await upload.setFiles( excelFilePath )
+  await upload.setFiles(excelFilePath)
   await expect( page.locator(".tr-landing-domain-input.form-control") ).toHaveValue( "obsqura-testing" )
 
   await page.getByPlaceholder( "Email" ).fill( "hasnaakareemhasu@gmail.com" )
   await page.getByRole( "button", { name: 'Continue' } ).click()
 
-  await expect( page.locator( ".success-box" ) ).toContainText( "Success" )
-  await page.pause()
+  //
+  await expect( page.locator( ".success-box" ) ).toContainText( "Success" )*/
+  
 
 })
